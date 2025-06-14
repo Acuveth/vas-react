@@ -1,110 +1,241 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { 
+  View, 
+  Text, 
+  ScrollView, 
+  TouchableOpacity,
+  Switch
+} from 'react-native';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+export default function ExploreScreen() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(0);
 
-export default function TabTwoScreen() {
+  const tabs = ['Cards', 'Lists', 'Grids', 'Forms'];
+  
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <ScrollView className={`flex-1 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      {/* Header with Dark Mode Toggle */}
+      <View className={`p-6 pt-12 ${darkMode ? 'bg-gray-800' : 'bg-blue-600'}`}>
+        <View className="flex-row justify-between items-center">
+          <View>
+            <Text className="text-3xl font-bold text-white mb-1">Explore</Text>
+            <Text className={`text-lg ${darkMode ? 'text-gray-300' : 'text-blue-100'}`}>
+              Advanced NativeWind Features
+            </Text>
+          </View>
+          <View className="items-center">
+            <Text className={`text-sm mb-2 ${darkMode ? 'text-gray-300' : 'text-blue-100'}`}>
+              Dark Mode
+            </Text>
+            <Switch
+              value={darkMode}
+              onValueChange={setDarkMode}
+              trackColor={{ false: '#CBD5E0', true: '#4F46E5' }}
+              thumbColor={darkMode ? '#F1F5F9' : '#FFFFFF'}
+            />
+          </View>
+        </View>
+      </View>
+
+      {/* Tab Navigation */}
+      <View className={`p-4 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-sm`}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View className="flex-row space-x-2">
+            {tabs.map((tab, index) => (
+              <TouchableOpacity
+                key={index}
+                className={`px-4 py-2 rounded-full ${
+                  selectedTab === index
+                    ? 'bg-blue-500'
+                    : darkMode
+                    ? 'bg-gray-700'
+                    : 'bg-gray-200'
+                }`}
+                onPress={() => setSelectedTab(index)}
+              >
+                <Text className={`font-medium ${
+                  selectedTab === index
+                    ? 'text-white'
+                    : darkMode
+                    ? 'text-gray-300'
+                    : 'text-gray-700'
+                }`}>
+                  {tab}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+
+      <View className="p-4">
+        {selectedTab === 0 && (
+          // Cards Section
+          <View className="space-y-4">
+            <Text className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              Card Components
+            </Text>
+            
+            {/* Feature Card */}
+            <View className={`rounded-2xl p-6 shadow-lg ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+              <View className="flex-row items-center mb-4">
+                <View className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center mr-4">
+                  <Text className="text-white font-bold text-lg">🚀</Text>
+                </View>
+                <View className="flex-1">
+                  <Text className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                    Premium Feature
+                  </Text>
+                  <Text className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Unlock advanced capabilities
+                  </Text>
+                </View>
+              </View>
+              <Text className={`mb-4 leading-6 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                Experience the full power of our platform with premium features designed to boost your productivity.
+              </Text>
+              <TouchableOpacity className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-xl">
+                <Text className="text-white text-center font-semibold">Get Started</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Stats Cards */}
+            <View className="flex-row space-x-4">
+              <View className={`flex-1 p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md`}>
+                <Text className="text-3xl font-bold text-green-500 mb-1">1.2K</Text>
+                <Text className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Users</Text>
+              </View>
+              <View className={`flex-1 p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md`}>
+                <Text className="text-3xl font-bold text-blue-500 mb-1">4.8</Text>
+                <Text className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Rating</Text>
+              </View>
+              <View className={`flex-1 p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md`}>
+                <Text className="text-3xl font-bold text-purple-500 mb-1">99%</Text>
+                <Text className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Uptime</Text>
+              </View>
+            </View>
+          </View>
+        )}
+
+        {selectedTab === 1 && (
+          // Lists Section
+          <View className="space-y-4">
+            <Text className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              List Components
+            </Text>
+            
+            {['Inbox', 'Drafts', 'Sent', 'Trash', 'Archive'].map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                className={`flex-row items-center p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-sm`}
+              >
+                <View className={`w-10 h-10 rounded-full items-center justify-center mr-4 ${
+                  index === 0 ? 'bg-blue-100' :
+                  index === 1 ? 'bg-yellow-100' :
+                  index === 2 ? 'bg-green-100' :
+                  index === 3 ? 'bg-red-100' : 'bg-purple-100'
+                }`}>
+                  <Text className="text-lg">
+                    {index === 0 ? '📥' : index === 1 ? '📝' : index === 2 ? '📤' : index === 3 ? '🗑️' : '📦'}
+                  </Text>
+                </View>
+                <View className="flex-1">
+                  <Text className={`font-semibold text-lg ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                    {item}
+                  </Text>
+                  <Text className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {Math.floor(Math.random() * 50)} items
+                  </Text>
+                </View>
+                <Text className="text-gray-400 text-2xl">›</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
+        {selectedTab === 2 && (
+          // Grids Section
+          <View>
+            <Text className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              Grid Layouts
+            </Text>
+            
+            <View className="flex-row flex-wrap -mx-2">
+              {Array.from({ length: 6 }, (_, index) => (
+                <View key={index} className="w-1/2 px-2 mb-4">
+                  <TouchableOpacity 
+                    className={`aspect-square rounded-2xl p-4 items-center justify-center ${
+                      index % 6 === 0 ? 'bg-red-100' :
+                      index % 6 === 1 ? 'bg-blue-100' :
+                      index % 6 === 2 ? 'bg-green-100' :
+                      index % 6 === 3 ? 'bg-yellow-100' :
+                      index % 6 === 4 ? 'bg-purple-100' : 'bg-pink-100'
+                    } ${darkMode ? 'bg-opacity-20' : ''}`}
+                  >
+                    <Text className="text-4xl mb-2">
+                      {['🎨', '📱', '🌟', '🎯', '🔥', '💎'][index % 6]}
+                    </Text>
+                    <Text className={`font-semibold text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                      Item {index + 1}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+
+        {selectedTab === 3 && (
+          // Forms Section
+          <View className="space-y-4">
+            <Text className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              Form Elements
+            </Text>
+            
+            <View className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
+              <Text className={`text-lg font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                Contact Form
+              </Text>
+              
+              {/* Form fields would go here - simplified for demo */}
+              <View className="space-y-4">
+                <View>
+                  <Text className={`mb-2 font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Name
+                  </Text>
+                  <View className={`h-12 rounded-lg border-2 px-4 justify-center ${
+                    darkMode ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-gray-50'
+                  }`}>
+                    <Text className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      Enter your name
+                    </Text>
+                  </View>
+                </View>
+                
+                <View>
+                  <Text className={`mb-2 font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Email
+                  </Text>
+                  <View className={`h-12 rounded-lg border-2 px-4 justify-center ${
+                    darkMode ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-gray-50'
+                  }`}>
+                    <Text className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      Enter your email
+                    </Text>
+                  </View>
+                </View>
+                
+                <TouchableOpacity className="bg-blue-500 p-4 rounded-xl mt-6">
+                  <Text className="text-white text-center font-semibold text-lg">
+                    Submit Form
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
+      </View>
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-});
